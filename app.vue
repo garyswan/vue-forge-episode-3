@@ -1,11 +1,8 @@
-<script setup lang="ts">
-const isExtension =useIsExtension()
-</script>
 <template>
   <div class="max-w-full w-[900px] m-auto">
     <NuxtErrorBoundary>
       <SocialMediaPostGenerator />
-      <ChatWidget v-if="!isExtension"/>
+      <ChatWidget />
       <template #error="{ error }">
         <div>
           <p class="text-4xl pt-10">⚠️ A fatal error has occurred:</p>
