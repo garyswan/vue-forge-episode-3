@@ -14,11 +14,18 @@
   },
   "dependencies": {
     "@nuxtjs/tailwindcss": "^6.6.4",
+    "@prettier/plugin-pug": "^2.4.2",
+    "@volar/vue-language-plugin-pug": "^1.6.3",
     "@vueuse/nuxt": "^9.13.0",
     "daisyui": "^2.51.5",
+    "eslint": "^8.39.0",
+    "eslint-config-prettier": "^8.8.0",
     "html-to-image": "^1.11.11",
     "nanoid": "^4.0.1",
     "openai": "^3.2.1",
+    "prettier": "^2.8.8",
+    "prettier-plugin-tailwindcss": "^0.2.8",
+    "pug": "^3.0.2",
     "vue3-markdown-it": "^1.0.10"
   }
 }

@@ -1,4 +1,7 @@
+// Utilities - is this available for all the sites? or does it need to be imported?
+
 import type { NitroFetchOptions } from "nitropack";
+
 export async function fetchWithTimeout<T>(
   url: string,
   fetchOptions: NitroFetchOptions<any, any> = {}
