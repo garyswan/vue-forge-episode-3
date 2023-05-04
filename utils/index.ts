@@ -1,4 +1,5 @@
 // Utilities - is this available for all the sites? or does it need to be imported?
+// Yes - all utilities are automatically imported
 
 import type { NitroFetchOptions } from "nitropack";
 

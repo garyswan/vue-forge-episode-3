@@ -4,5 +4,6 @@ export default defineNuxtConfig({
   runtimeConfig: {
     OPENAI_API_KEY: "",
   },
+  // Server side render is disabled
   ssr: false,
 });
