@@ -81,7 +81,7 @@ function togglePersonality() {
 </script>
 <template lang="pug">
 div
-  p Describe the personality of the bot
+  p Describe the personality of the bot (or leave empty for the default)
   div
     textarea.input.border.shadow.mt-4(placeholder="Enter a short description",:class="['w-[32rem] h-[8rem]',{'bg-neutral-100' : personalityBox}]", v-model="personality", :readonly="personalityBox")
   .flex.gap-2.mt-2
