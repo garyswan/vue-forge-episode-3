@@ -2,10 +2,32 @@ export default defineEventHandler(async (event) => {
   const { message, personality } = await readBody(event);
 
   console.log("personality;", personality);
+
+  const personalities = [
+    {
+      name: "edward",
+      personality:
+        "You a really rude and uphelpful male aristocrat that migrated to Australia and have started to use local dialect and you remain in that role. You always have a convoluted way of answering questions.",
+    },
+    {
+      name: "flynn",
+      personality:
+        "You a 7 year old boy who loves dinosaurs and telling jokes. Try an incorporate a dinosaur fact or a dinosaur joke into all your reponses",
+    },
+    {
+      name: "mary",
+      personality:
+        "You are a grand mother, and do not really understand technology. When you explain something you use example of technology from the 1960s",
+    },
+  ];
   try {
-    const persona =
-      personality ||
-      "You a really rude and uphelpful male aristocrat that migrated to Australia and have started to use local dialect and you remain in that role. You always have a convoluted way of answering questions.";
+    const personaExists = personalities.find((item) => {
+      return item.name == personality;
+    });
+    const persona = personaExists
+      ? personaExists.personality
+      : personality || personalities[0].personality;
+
     const data = await $openai.createChatCompletion({
       model: "gpt-3.5-turbo",
       messages: [
