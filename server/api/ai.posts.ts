@@ -1,8 +1,20 @@
+// Create persistant messages with storage
+const storage = useStorage();
+
+async function fetchOpenAI() {
+  return [];
+}
+// async function fetchClient() {
+//   const data = await newclient("/v1/chat/completion", {});
+//   return data;
+// }
+
 export default defineEventHandler(async (event) => {
+  // Gets the content of the payload
   const { message, personality } = await readBody(event);
 
+  // Setup personalities
   console.log("personality;", personality);
-
   const personalities = [
     {
       name: "edward",
@@ -25,6 +37,18 @@ export default defineEventHandler(async (event) => {
         "You are a grand mother, and do not really understand technology. When you explain something you use example of technology from the 1960s",
     },
   ];
+
+  // Add a session handler - allow the bot to remember and learn from what was said
+  const session = await useSession(event, {
+    password:
+      "qwertyuiopasdfghjkl;zxcvbnm,.qwertyuiopasdfghjkl;zxcvbnm,.qwertyuiopasdfghjkl;zxcvbnm,.",
+  });
+  // const messages = session.data.messages || [];
+  const key = session.id + ":messages";
+  const messages = ((await storage.getItem(key)) as Array<any>) || [];
+  console.log(messages);
+  messages.push({ role: "user", content: message });
+
   try {
     const personaExists = personalities.find((item) => {
       return item.name == personality;
@@ -38,15 +62,23 @@ export default defineEventHandler(async (event) => {
       messages: [
         {
           role: "system",
-          content: persona,
+          content:
+            persona +
+            ". This software takes an article or link provided and creates a summary. Do not use provide answers on anything not related to the `Social Media Post Generator`.",
         },
-        { role: "user", content: message },
+        ...messages,
       ],
+      temperature: 1,
       max_tokens: 100,
     });
     // console.log(data);
     // const openai
-    return data.data.choices[0].message;
+    const response = data.data.choices[0].message;
+    messages.push({ role: "assistant", content: response?.content });
+    // await session.update({ messages });
+    // Store the messages
+    await storage.setItem(key, messages);
+    return response;
     // {
     //   "id": "chatcmpl-7CdDkoDKBwk33j5iyQk63bMyHcpwf",
     //   "object": "chat.completion",

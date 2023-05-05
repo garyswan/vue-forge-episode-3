@@ -5,4 +5,4 @@ const openaiConfig = new Configuration({
   apiKey: config.openai.apiKey,
 });
 export const $openai = new OpenAIApi(openaiConfig);
-console.log("apiKey;", openaiConfig);
+// console.log("apiKey;", openaiConfig);
