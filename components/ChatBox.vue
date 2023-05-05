@@ -84,7 +84,7 @@ div
   p Describe the personality of the bot (or leave empty for the default)
   div
     textarea.input.border.shadow.mt-4(placeholder="Enter a short description",:class="['w-[32rem] h-[8rem]',{'bg-neutral-100' : personalityBox}]", v-model="personality", :readonly="personalityBox")
-    div.italic.text-neutral-400 You can use some predefined personas by just typing "mary", "flynn" or the default "edward"
+    div.italic.text-neutral-400 You can use some predefined personas by just typing "mary", "flynn", "karen" or the default "edward"
   .flex.gap-2.mt-2
     button.rounded.bg-blue-400.h-12.px-4.text-white.font-bold(@click="togglePersonality()", class="w-[6rem]")
         span(v-if="personalityBox") Edit
