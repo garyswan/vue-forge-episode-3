@@ -78,6 +78,8 @@ const personalityBox = ref(false);
 function togglePersonality() {
   personalityBox.value = !personalityBox.value;
 }
+
+const botname = "TODO: useState";
 </script>
 <template lang="pug">
 div
@@ -95,7 +97,7 @@ div
   //- div.fixed.bg-neutral-50.shadow-lg.rounded.p-8.border(class="h-[50vh] w-[32rem] bottom-[1rem] right-[1.5rem]")
   .overflow-auto.border.flex.flex-col.h-full(class="w-[32rem]")
     header.border.flex.h-20.items-center.bg-neutral-200.p-4
-      p.text-xl.font-bold Make me dinner
+      p.text-xl.font-bold Say hello to {{botname}}
     //- Below uses a template ref
     #message-container.grow.overflow-auto.p-4(ref="messageBox")
       template(v-for="message in messages" :key="message.id")

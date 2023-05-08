@@ -9,6 +9,8 @@ async function fetchOpenAI() {
 //   return data;
 // }
 
+// const useBot = () => useState<string>("botname", () => "willa");
+
 export default defineEventHandler(async (event) => {
   // Gets the content of the payload
   const { message, personality } = await readBody(event);
