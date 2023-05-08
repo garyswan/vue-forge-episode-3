@@ -1,13 +1,7 @@
 <script setup lang="ts">
 definePageMeta({
   layout: "dashboard",
-  middleware: [
-    function (to, from) {
-      if (to.name == "dashboard") {
-        return navigateTo("/dashboard/izac");
-      }
-    },
-  ],
+  middleware: ["dashboard"],
 });
 </script>
 <template lang="pug">

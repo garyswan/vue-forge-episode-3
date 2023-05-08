@@ -1,5 +1,9 @@
+import { skipHydrate } from "pinia";
+import type { SupabaseClient } from "@supabase/supabase-js";
+
 export const useProfileStore = defineStore("profile", {
   state: () => ({
+    user: skipHydrate(useSupabaseUser()),
     profile: {
       full_name: "",
       bio: "",
@@ -7,11 +11,15 @@ export const useProfileStore = defineStore("profile", {
     },
     isUpdating: false,
   }),
+  // hydrate(state, initialState) {
+  //   state.profile = initialState.profile;
+  //   state.isUpdating = initialState.isUpdating;
+  //   state.supabase = useSupabaseClient();
+  // },
   actions: {
-    async downloadImage(avatar_url: string) {
-      const supabase = useSupabaseClient();
+    async downloadImage(avatar_url: string, client: SupabaseClient) {
       try {
-        const { data, error } = await supabase.storage
+        const { data, error } = await client.storage
           .from("avatars")
           .download(avatar_url);
         if (error) throw error;
@@ -20,19 +28,17 @@ export const useProfileStore = defineStore("profile", {
         console.error("Error downloading image: ", error.message);
       }
     },
-    async fetchProfile() {
+    async fetchProfile(client: SupabaseClient) {
       this.isUpdating = true;
-      const supabase = useSupabaseClient();
-      const user = useSupabaseUser();
-      let { data } = await supabase
+      let { data } = await client
         .from("profiles")
         .select(`full_name, bio, avatar_url`)
-        .eq("id", user.value!.id)
+        .eq("id", this.user!.id)
         .single();
       if (data) {
         this.profile = { ...data };
-        this.profile.avatar_url = user.value!.user_metadata.avatar_url;
-        await this.downloadImage(data.avatar_url);
+        this.profile.avatar_url = this.user!.user_metadata.avatar_url;
+        await this.downloadImage(data.avatar_url, client);
       }
       this.isUpdating = false;
     },

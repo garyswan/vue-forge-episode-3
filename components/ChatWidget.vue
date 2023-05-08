@@ -18,26 +18,26 @@ const users = computed(() => [me.value, bot.value]);
 // {
 //   text: "Hey, how's it going?",
 //   id: nanoid(),
-//   userId: "user",
-//   createdAt: new Date(new Date().getTime() - 5 * 60000),
+//   user_id: "user",
+//   created_at: new Date(new Date().getTime() - 5 * 60000),
 // },
 // {
 //   text: "**Great!** I'm building a cool chat app at Vue.js Forge 🔥",
 //   id: nanoid(),
-//   userId: "assistant",
-//   createdAt: new Date(new Date().getTime() - 4 * 60000),
+//   user_id: "assistant",
+//   created_at: new Date(new Date().getTime() - 4 * 60000),
 // },
 // {
 //   text: "Very cool! I'm so jealous 😀",
 //   id: nanoid(),
-//   userId: "user",
-//   createdAt: new Date(new Date().getTime() - 2 * 60000),
+//   user_id: "user",
+//   created_at: new Date(new Date().getTime() - 2 * 60000),
 // },
 // {
 //   text: "You can join me. Just visit the  [Vue.js Forge](https://vuejsforge.com/) website and sign-up. It's free!",
 //   id: nanoid(),
-//   userId: "assistant",
-//   createdAt: new Date(),
+//   user_id: "assistant",
+//   created_at: new Date(),
 // },
 // const messages = ref<Message[]>([])
 const messages = useSessionStorage<Message[]>("messages", []);
@@ -54,7 +54,7 @@ async function handleNewMessage(message: Message, personality?: String) {
   const res = await $fetch("/api/ai", {
     method: "POST",
     body: {
-      message: message.text,
+      message: message.message,
       personality: personality || undefined,
     },
   });
@@ -62,9 +62,9 @@ async function handleNewMessage(message: Message, personality?: String) {
     usersTyping.value = [];
     messages.value.push({
       id: nanoid(),
-      createdAt: new Date(),
-      text: res.content,
-      userId: "assistant",
+      created_at: new Date(),
+      message: res.content,
+      user_id: "assistant",
     });
   }, 3000);
 }

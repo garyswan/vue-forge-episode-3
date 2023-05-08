@@ -20,7 +20,7 @@ onUnmounted(() => {
 const loading = ref(true);
 
 const user = useSupabaseUser();
-if (!profileStore.profile) await profileStore.fetchProfile();
+if (!profileStore.profile) await profileStore.fetchProfile(supabase);
 
 const avatar = ref<string>(profileStore.profile?.avatar_url);
 
@@ -49,7 +49,7 @@ async function updateProfile(saveAvatar = false) {
     });
     if (error) throw error;
     if (saveAvatar) {
-      await profileStore.fetchProfile();
+      await profileStore.fetchProfile(supabase);
     }
     avatar.value = profileStore.profile?.avatar_url;
   } catch (error) {

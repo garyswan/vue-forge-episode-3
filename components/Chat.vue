@@ -1,20 +1,22 @@
 <script setup lang="ts">
 import type { Message, User } from "~~/types";
+const emit = defineEmits<{
+  (e: "sendMessage", message: string): void;
+  (e: "update:botIsTyping", value: boolean): void;
+}>();
 const props = defineProps<{
   bot: User;
   messages: Message[];
   me: User;
+  botIsTyping: boolean;
 }>();
 
-const botIsTyping = ref(false);
 const textMessage = ref("");
 
-const getUser = (userId: string) => {
-  return props.bot.id == userId ? props.bot : props.me;
-};
-
 const sendMessage = () => {
-  console.log("sendMessage");
+  emit("sendMessage", textMessage.value);
+  textMessage.value = "";
+  emit("update:botIsTyping", true);
 };
 </script>
 
@@ -26,12 +28,12 @@ const sendMessage = () => {
       p.text-xl.font-bold Say hello to {{bot.name}}
     //- Below uses a template ref
     #message-container.grow.overflow-auto.p-4(ref="messageBox")
-      template(v-for="message in messages" :key="message.id")
-        ChatBubble(:user="getUser(message.userId)",:message="message", :isMine="me.id == message.userId")
       template(v-if="botIsTyping") 
           AppLoading
       p.text-sm.mb-2.h-8(v-if="botIsTyping")
         span.italic {{`${bot.name} is typing ...`}}
+      template(v-for="message in messages" :key="message.id")
+        ChatBubble(:user="message.author_is_user ? me : bot",:message="message", :isMine="message.author_is_user")
       //- #ancor is here - This doesn't work - to set the message to boom
     //- footer.absolute.bottom-0.left-0.w-full.p-2.bg-neutral-100
     footer.w-full.p-2

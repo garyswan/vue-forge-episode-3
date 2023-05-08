@@ -18,9 +18,9 @@ const props = withDefaults(
 // Toggle the chatbox open/close
 const isOpen = ref(true);
 // Get the user information
-const getUser = (userId: string) => {
+const getUser = (user_id: string) => {
   return props.users.find((item) => {
-    return item.id == userId;
+    return item.id == user_id;
   });
 };
 // Add interactions with the input field
@@ -38,9 +38,9 @@ const sendMessage = () => {
     "newMessage",
     {
       id: nanoid(),
-      userId: props.me.id,
-      createdAt: new Date(),
-      text: textMessage.value,
+      user_id: props.me.id,
+      created_at: new Date(),
+      message: textMessage.value,
     },
     personality.value
   );
@@ -101,7 +101,7 @@ div
     //- Below uses a template ref
     #message-container.grow.overflow-auto.p-4(ref="messageBox")
       template(v-for="message in messages" :key="message.id")
-        ChatBubble(:user="getUser(message.userId)",:message="message", :isMine="me.id == message.userId")
+        ChatBubble(:user="getUser(message.user_id)",:message="message", :isMine="me.id == message.user_id")
       template(v-for="user in usersTyping" :user="user") 
           AppLoading
       p.text-sm.mb-2.h-8

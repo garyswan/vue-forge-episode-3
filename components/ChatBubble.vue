@@ -1,20 +1,19 @@
 <script lang="ts" setup>
-
-import type {Message, User} from '~~/types'
+import type { Message, User } from "~~/types";
 
 const props = withDefaults(
   defineProps<{
-    user? : User;
-    message? : Message;
-    isMine : boolean;
+    user?: User;
+    message?: Message;
+    isMine: boolean;
   }>(),
   {
-    isMine : true
+    isMine: true,
   }
 );
 
 // Part of VueUse - find out all the methods
-const relativeTime = useTimeAgo(props.message?.createdAt || new Date())
+const relativeTime = useTimeAgo(props.message?.created_at || new Date());
 </script>
 <template lang="pug">
 div.mb-4(:class="['chat',isMine ? 'chat-end' : 'chat-start']")
@@ -25,10 +24,10 @@ div.mb-4(:class="['chat',isMine ? 'chat-end' : 'chat-start']")
   div(class="chat-header")
     | {{ user?.name }}
     time.mx-2(class="text-xs opacity-50") {{ relativeTime }}
-    //- {{ message.createdAt }}
+    //- {{ message.created_at }}
   div(class="chat-bubble")
-    template(v-if="message?.text")
-      Markdown( :source="message.text")
+    template(v-if="message?.message")
+      Markdown( :source="message.message")
     template(v-else)
       slot
   //- div(class="chat-footer opacity-50") Delivered

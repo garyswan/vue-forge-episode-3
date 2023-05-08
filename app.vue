@@ -1,7 +1,12 @@
 <script lang="ts" setup>
 import { useProfileStore } from "@/stores/profile";
+import { useAiStore } from "./stores/ai";
+const client = useSupabaseClient();
+
 const profile = useProfileStore();
-profile.fetchProfile();
+await profile.fetchProfile(client);
+const ai = useAiStore();
+await ai.fetchPersonas(client);
 </script>
 <template>
   <NuxtLayout>
