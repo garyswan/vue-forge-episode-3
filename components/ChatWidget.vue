@@ -76,6 +76,7 @@ ChatBox(
   :users="users"
   :messages="messages"
   @new-message="handleNewMessage"
-  :usersTyping="usersTyping")
+  :usersTyping="usersTyping"
+  )
   
 </template>

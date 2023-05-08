@@ -1,8 +1,9 @@
 <template>
-  <div class="max-w-full w-[900px] m-auto">
+  <NuxtLayout>
     <NuxtErrorBoundary>
       <!-- <SocialMediaPostGenerator />
       <ChatWidget /> -->
+
       <NuxtPage />
       <template #error="{ error }">
         <div>
@@ -11,5 +12,5 @@
         </div>
       </template>
     </NuxtErrorBoundary>
-  </div>
+  </NuxtLayout>
 </template>
