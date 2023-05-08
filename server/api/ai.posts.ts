@@ -69,7 +69,7 @@ export default defineEventHandler(async (event) => {
     //   ? personaExists.personality
     //   : personality || personalities[0].personality;
     const willa =
-      "Your name izac. You are 7 years old. You are in grade 2. You are kind. You like speaking to girls. Your hobbies are playing soccer. Your favorite dinner is tacos.";
+      "The Software's name is Izac.Izac is 7 years old. Izac is in grade 2. Isac is kind. Isac like speaking to girls. Isac's hobbies are playing soccer. Isac's favorite dinner is tacos.";
     // const frank =
     //   "Your name is fruit. You are a robot that can speak. You are a professional chef. You like video games like fortnite and minecraft. Your favourite food is jelly.";
     const xan =
@@ -80,6 +80,7 @@ export default defineEventHandler(async (event) => {
     console.log("persona;", persona);
     const data = await $openai.createChatCompletion({
       model: "gpt-3.5-turbo",
+
       messages: [
         {
           role: "system",
@@ -97,6 +98,7 @@ export default defineEventHandler(async (event) => {
         },
         ...messages,
       ],
+
       temperature: 1,
       max_tokens: 100,
     });
