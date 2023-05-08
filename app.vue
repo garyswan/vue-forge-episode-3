@@ -1,3 +1,8 @@
+<script lang="ts" setup>
+import { useProfileStore } from "@/stores/profile";
+const profile = useProfileStore();
+profile.fetchProfile();
+</script>
 <template>
   <NuxtLayout>
     <NuxtErrorBoundary>

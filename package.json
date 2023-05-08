@@ -21,12 +21,14 @@
   },
   "dependencies": {
     "@nuxtjs/tailwindcss": "^6.6.4",
+    "@pinia/nuxt": "^0.4.9",
     "@types/marked": "^4.3.0",
     "@types/node": "^18.16.3",
     "@vueuse/nuxt": "^9.13.0",
     "daisyui": "^2.51.6",
     "html-to-image": "^1.11.11",
     "nanoid": "^4.0.1",
-    "openai": "^3.2.1"
+    "openai": "^3.2.1",
+    "pinia": "^2.0.35"
   }
 }
