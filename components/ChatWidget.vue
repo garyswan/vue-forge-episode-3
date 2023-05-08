@@ -10,7 +10,7 @@ const me = ref<User>({
 const bot = ref<User>({
   id: "assistant",
   avatar: "/bot.jpg",
-  name: "Botman",
+  name: "Dinnerbot",
 });
 
 const users = computed(() => [me.value, bot.value]);

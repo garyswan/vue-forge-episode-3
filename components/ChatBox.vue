@@ -81,10 +81,10 @@ function togglePersonality() {
 </script>
 <template lang="pug">
 div
-  p Describe the personality of the bot (or leave empty for the default)
+  p Supply a list of food that you CANNOT eat
   div
     textarea.input.border.shadow.mt-4(placeholder="Enter a short description",:class="['w-[32rem] h-[8rem]',{'bg-neutral-100' : personalityBox}]", v-model="personality", :readonly="personalityBox")
-    div.italic.text-neutral-400 You can use some predefined personas by just typing "mary", "flynn", "karen" or the default "edward"
+    //- div.italic.text-neutral-400 You can use some predefined personas by just typing "mary", "flynn", "karen" or the default "edward"
   .flex.gap-2.mt-2
     button.rounded.bg-blue-400.h-12.px-4.text-white.font-bold(@click="togglePersonality()", class="w-[6rem]")
         span(v-if="personalityBox") Edit
@@ -95,7 +95,7 @@ div
   //- div.fixed.bg-neutral-50.shadow-lg.rounded.p-8.border(class="h-[50vh] w-[32rem] bottom-[1rem] right-[1.5rem]")
   .overflow-auto.border.flex.flex-col.h-full(class="w-[32rem]")
     header.border.flex.h-20.items-center.bg-neutral-200.p-4
-      p.text-xl.font-bold Customer Support
+      p.text-xl.font-bold Make me dinner
     //- Below uses a template ref
     #message-container.grow.overflow-auto.p-4(ref="messageBox")
       template(v-for="message in messages" :key="message.id")
