@@ -44,7 +44,7 @@ const isLoading = computed(() => uploading.value || loading.value);
 </script>
 
 <template lang="pug">
-.relative
+.relative.cursor-pointer
   img.w-32.h-32.object-cover.rounded-full(v-if="!isLoading", :src="path", alt="Avatar", @click="i?.click()")
   div.w-32.h-32.text-primary.m-4(v-else class="lds-ring")
     div

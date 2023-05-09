@@ -29,6 +29,7 @@ export const useProfileStore = defineStore("profile", {
       }
     },
     async fetchProfile(client: SupabaseClient) {
+      if (!this.user) return;
       this.isUpdating = true;
       let { data } = await client
         .from("profiles")

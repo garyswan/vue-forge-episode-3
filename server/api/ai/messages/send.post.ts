@@ -24,11 +24,19 @@ export default defineEventHandler(async (event) => {
 
   const { data: persona } = await client
     .from("personas")
-    .select("description")
+    .select("description, name")
     .eq("id", body.persona_id)
     .single();
   if (!persona)
     throw createError({ statusCode: 500, message: "Persona not found" });
+
+  const { data: userProfile } = await client
+    .from("profiles")
+    .select("full_name, bio")
+    .eq("id", body.user_id)
+    .single();
+  if (!userProfile)
+    throw createError({ statusCode: 500, message: "User not found" });
 
   const data = await $openai.createChatCompletion({
     model: "gpt-3.5-turbo",
@@ -37,16 +45,18 @@ export default defineEventHandler(async (event) => {
       {
         role: "system",
         content:
+          `Your name is ${persona.name}, here is a description of you:` +
           persona.description +
-          `. This software provides a conversation with a child using an AI as a virtual friend. The Software will act like the Personality. The information provided is for children and must be appropriate for a person 8 years and younger. If any question is asked that is inappropirate the Software MUST recommended they talk with their mum and dad.`,
-        // `. This software provides recipies to create a healthy meal plan. Do not recommend any meals or recipies with following food ingredients: ${excludeFood}. If you provide a recipie try and also provide to total kilojoules of the ingredients for an average adult male meal intake `,
+          `. This software provides a conversation with a child using an AI as a virtual friend. The Software will act like the Personality. The information provided is for children and must be appropriate for a person 8 years and younger. If any question is asked that is inappropirate the Software MUST recommended they talk with their mum and dad.` +
+          `Software speak with: ${userProfile.full_name} ${userProfile.bio}`,
       },
       {
         role: "assistant",
         content:
+          `Your name is ${persona.name}, here is a description of you:` +
           persona.description +
-          `. This software provides a conversation with a child using an AI as a virtual friend. The information provided is for children and must be appropriate for a person 8 years and younger.`,
-        // `. This software provides recipies to create a healthy meal plan. Do not recommend any meals or recipies with following food ingredients: ${excludeFood}.`,
+          `. This software provides a conversation with a child using an AI as a virtual friend. The information provided is for children and must be appropriate for a person 8 years and younger.` +
+          `Software speak with: ${userProfile.full_name} ${userProfile.bio}`,
       },
       ...(messages as any[]).map((message) => ({
         role: (message.author_is_user
