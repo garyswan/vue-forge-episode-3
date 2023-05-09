@@ -10,5 +10,6 @@ div.h-full.flex-1.grid
     .col-span-1
       Sidebar
     .col-span-4.col-start-2
-      NuxtPage
+      KeepAlive
+        NuxtPage
 </template>

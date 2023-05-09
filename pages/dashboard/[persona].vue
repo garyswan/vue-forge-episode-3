@@ -22,7 +22,7 @@ if (!selectedPersona.value) {
 }
 const bot = computed<User>(() => ({
   id: selectedPersona.value?.id || "null",
-  avatar: "/bot.jpg",
+  avatar: img.value,
   name: selectedPersona.value?.name || "Bot",
 }));
 
@@ -68,12 +68,27 @@ const onDeletedBot = async () => {
   isEditing.value = false;
   isUpdating.value = false;
 };
+
+const { data } = useFetch(
+  `/api/ai/avatar/generate/${selectedPersona.value!.id}`,
+  {
+    server: false,
+    lazy: true,
+  }
+);
+
+const img = computed(() => {
+  if (data.value) {
+    return data.value;
+  }
+  return "/bot.jpg";
+});
 </script>
 
 <template lang="pug">
 .max-w-lg.mx-auto.pt-16.flex.flex-col.h-full.gap-3.justify-between.py-4
   .image.cursor-pointer.w-32.h-32.mx-auto(@click="editBot")
-    img.w-full.h-full.object-cover.rounded-full.mx-auto(src="/bot.jpg")
+    img.w-full.h-full.object-cover.rounded-full.mx-auto(:src="img")
   Chat(
     :bot="bot"
     :me="me"

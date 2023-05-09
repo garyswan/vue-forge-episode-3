@@ -17,6 +17,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     openai: {
       apiKey: process.env.NUXT_OPENAI_API_KEY,
+      dalle: process.env.NUXT_OPENAI_DALLE_KEY,
     },
   },
   ssr: false,
