@@ -30,11 +30,14 @@ export const useProfileStore = defineStore("profile", {
     },
     async fetchProfile(client: SupabaseClient) {
       this.isUpdating = true;
+
+      // Max: there's an issue here on first load with (ie. no user) .eq("id", this.user!.id)
       let { data } = await client
         .from("profiles")
         .select(`full_name, bio, avatar_url`)
         .eq("id", this.user!.id)
         .single();
+
       if (data) {
         this.profile = { ...data };
         this.profile.avatar_url = this.user!.user_metadata.avatar_url;
