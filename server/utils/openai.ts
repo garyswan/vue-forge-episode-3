@@ -6,3 +6,9 @@ const openaiConfig = new Configuration({
 });
 export const $openai = new OpenAIApi(openaiConfig);
 // console.log("apiKey;", openaiConfig);
+
+const dalleConfig = new Configuration({
+  apiKey: config.openai.dalle,
+});
+export const $dalle = new OpenAIApi(openaiConfig);
+// console.log("apiKey;", openaiConfig);

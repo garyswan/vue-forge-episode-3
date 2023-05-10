@@ -4,7 +4,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
   if (ai.personas.length === 0) {
     await ai.fetchPersonas(useSupabaseClient());
   }
-  if (to.name == "dashboard") {
+  if (to.name == "dashboard" && ai.personas.length > 0) {
     return navigateTo("/dashboard/" + ai.personas[0].id);
   }
 });

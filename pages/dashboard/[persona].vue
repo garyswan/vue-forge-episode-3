@@ -7,6 +7,7 @@ const user = useSupabaseUser();
 const ai = useAiStore();
 const route = useRoute();
 const profileStore = useProfileStore();
+const supabase = useSupabaseClient();
 
 const me = ref<User>({
   id: user.value!.id,
@@ -17,12 +18,12 @@ const selectedPersona = computed(() => {
   return ai.personas.find((p) => p.id === route.params.persona);
 });
 if (!selectedPersona.value) {
-  throw showError({ statusCode: 404, statusMessage: "Persona not found" });
+  useRouter().push("/dashboard");
 }
 const bot = computed<User>(() => ({
-  id: selectedPersona.value!.id,
-  avatar: "/bot.jpg",
-  name: selectedPersona.value!.name,
+  id: selectedPersona.value?.id || "null",
+  avatar: img.value,
+  name: selectedPersona.value?.name || "Bot",
 }));
 
 const { data: messages } = await useAsyncData(() =>
@@ -48,12 +49,46 @@ const onSendMessage = async (message: string) => {
   messages.value?.unshift(response);
   botIsTyping.value = false;
 };
+
+const isEditing = ref(false);
+const isUpdating = ref(false);
+const editBot = () => {
+  isEditing.value = true;
+};
+const onSaveBot = async (bot: { name: string; description: string }) => {
+  isUpdating.value = true;
+  await ai.updatePersona(selectedPersona.value!.id, bot, supabase);
+  isEditing.value = false;
+  isUpdating.value = false;
+};
+const onDeletedBot = async () => {
+  isUpdating.value = true;
+  await ai.deletePersona(selectedPersona.value!.id, supabase);
+  useRouter().push("/dashboard");
+  isEditing.value = false;
+  isUpdating.value = false;
+};
+
+const { data } = useFetch(
+  `/api/ai/avatar/generate/${selectedPersona.value!.id}`,
+  {
+    server: false,
+    lazy: true,
+  }
+);
+
+const img = computed(() => {
+  if (data.value) {
+    return data.value;
+  }
+  return "/bot.jpg";
+});
 </script>
 
 <template lang="pug">
 .max-w-lg.mx-auto.pt-16.flex.flex-col.h-full.gap-3.justify-between.py-4
-  .image
-    img.w-32.h-32.object-cover.rounded-full.mx-auto(src="/bot.jpg")
+  .image.cursor-pointer.w-32.h-32.mx-auto(@click="editBot")
+    img.w-full.h-full.object-cover.rounded-full.mx-auto(:src="img")
   Chat(
     :bot="bot"
     :me="me"
@@ -61,4 +96,6 @@ const onSendMessage = async (message: string) => {
     @send-message="onSendMessage"
     v-model:bot-is-typing="botIsTyping"
   )
+  Teleport(v-if="isEditing",to="body")
+    EditBotModal(:bot="{...selectedPersona}", @save="onSaveBot", @close="isEditing = false", @delete="onDeletedBot", :is-loading="isUpdating")
 </template>

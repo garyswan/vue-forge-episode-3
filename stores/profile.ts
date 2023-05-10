@@ -29,6 +29,7 @@ export const useProfileStore = defineStore("profile", {
       }
     },
     async fetchProfile(client: SupabaseClient) {
+      if (!this.user) return;
       this.isUpdating = true;
 
       // Max: there's an issue here on first load with (ie. no user) .eq("id", this.user!.id)
