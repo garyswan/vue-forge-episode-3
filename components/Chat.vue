@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import EmojiPicker from "vue3-emoji-picker";
+import "vue3-emoji-picker/css";
 import type { Message, User } from "~~/types";
 const emit = defineEmits<{
   (e: "sendMessage", message: string): void;
@@ -17,6 +19,11 @@ const sendMessage = () => {
   emit("sendMessage", textMessage.value);
   textMessage.value = "";
   emit("update:botIsTyping", true);
+  emojiOpenend.value = false;
+};
+const emojiOpenend = ref(false);
+const onEmojiSelect = (emoji: any) => {
+  textMessage.value += emoji.i;
 };
 </script>
 
@@ -36,7 +43,9 @@ const sendMessage = () => {
         ChatBubble(:user="message.author_is_user ? me : bot",:message="message", :isMine="message.author_is_user")
       //- #ancor is here - This doesn't work - to set the message to boom
     //- footer.absolute.bottom-0.left-0.w-full.p-2.bg-neutral-100
-    footer.w-full.p-2
+    footer.w-full.p-2.relative
+      ClientOnly
+        EmojiPicker.absolute.top-0.-translate-y-full.right-0(v-if="emojiOpenend", :native="true" @select="onEmojiSelect")
       input.input.w-full.shadow(type="text",placeholder="Start typing ...",v-model="textMessage",@keypress.enter.exact.prevent="sendMessage")
-
+      Emoji.absolute.right-0.top-0.m-2.cursor-pointer(class="-translate-x-1/2 translate-y-1/2", @click="emojiOpenend = !emojiOpenend")
 </template>

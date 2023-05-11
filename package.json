@@ -29,6 +29,7 @@
     "html-to-image": "^1.11.11",
     "nanoid": "^4.0.1",
     "openai": "^3.2.1",
-    "pinia": "^2.0.35"
+    "pinia": "^2.0.35",
+    "vue3-emoji-picker": "^1.1.7"
   }
 }
